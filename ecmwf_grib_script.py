@@ -5,7 +5,8 @@ import os
 import pandas as pd
 from datetime import datetime
 
-url_main = "https://data.ecmwf.int/forecasts/"
+TARGET_PATH = "/home/user/Desktop/ECMWFGribs"
+URL_MAIN = "https://data.ecmwf.int/forecasts/"
 
 sys_date = datetime.strftime(datetime.now(), format = "%Y%m%d")
 grib_date = datetime.strftime(datetime.now() - pd.to_timedelta(1, "d"), format = "%Y%m%d")
@@ -23,15 +24,15 @@ def ecmwf_gribber(date: str, hr: int, run: int):
     tof = ["scda" if (hr == "06") | (hr == "18") else "oper"][0]
     
     url_secondary = f"{date}/{hr}z/0p4-beta/{tof}/{date}{hr}0000-{run}h-{tof}-fc.grib2"
-    url_temp = url_main + url_secondary
+    url_temp = URL_MAIN + url_secondary
     
-    if not os.path.exists(f"/home/user/Desktop/ECMWFGribs/{date}/{hr}/"):
-        os.makedirs(f"/home/user/Desktop/ECMWFGribs/{date}/{hr}/")
+    if not os.path.exists(f"{TARGET_PATH}/{date}/{hr}/"):
+        os.makedirs(f"{TARGET_PATH}/{date}/{hr}/")
         print("...The File Created...")
     else:
         print("...The File already exists!!...")
         
-    os.chdir(f"/home/user/Desktop/ECMWFGribs/{date}/{hr}/")
+    os.chdir(f"{TARGET_PATH}/{date}/{hr}/")
     os.system(f"wget {url_temp}")
 
 
